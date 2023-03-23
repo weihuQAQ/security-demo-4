@@ -1,0 +1,23 @@
+###
+
+### Login
+
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "8cf3eb32-8b57-40f8-acc5-5c7c03319424"
+}
+
+### register
+
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "hw",
+  "password": "19971216Hw"
+}
+
+###
