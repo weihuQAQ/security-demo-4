@@ -25,8 +25,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> authenticate(
             @RequestBody AuthRequest request
     ) {
-        System.out.println(request);
-        return ResponseEntity.ok(AuthResponse.builder().token("token 2").build());
+        return ResponseEntity.ok(authService.login(request));
     }
 }
 

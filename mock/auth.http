@@ -2,12 +2,12 @@
 
 ### Login
 
-POST {{host}}/login
+POST {{host}}/api/v1/auth/authenticate
 Content-Type: application/json
 
 {
-  "username": "user",
-  "password": "8cf3eb32-8b57-40f8-acc5-5c7c03319424"
+  "username": "hw6",
+  "password": "19971216Hw"
 }
 
 ### register
@@ -16,7 +16,7 @@ POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "username": "hw3",
+  "username": "hw4",
   "password": "19971216Hw"
 }
 
