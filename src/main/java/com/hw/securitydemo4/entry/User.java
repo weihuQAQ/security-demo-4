@@ -1,6 +1,5 @@
 package com.hw.securitydemo4.entry;
 
-import com.hw.securitydemo4.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,8 +31,12 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL)
+    @JoinTable(
+            joinColumns = {@JoinColumn(referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")}
+    )
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;

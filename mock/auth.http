@@ -6,9 +6,16 @@ POST {{host}}/api/v1/auth/authenticate
 Content-Type: application/json
 
 {
-  "username": "hw6",
+  "username": "hw",
   "password": "19971216Hw"
 }
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### info
+POST {{host}}/api/v1/user/info
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 ### register
 
@@ -16,7 +23,7 @@ POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "username": "hw4",
+  "username": "hw",
   "password": "19971216Hw"
 }
 

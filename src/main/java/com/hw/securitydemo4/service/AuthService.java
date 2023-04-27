@@ -1,8 +1,9 @@
 package com.hw.securitydemo4.service;
 
+import com.hw.securitydemo4.entry.Role;
 import com.hw.securitydemo4.entry.Token;
 import com.hw.securitydemo4.entry.User;
-import com.hw.securitydemo4.enums.Role;
+import com.hw.securitydemo4.enums.RoleType;
 import com.hw.securitydemo4.enums.TokenType;
 import com.hw.securitydemo4.model.AuthRequest;
 import com.hw.securitydemo4.model.AuthResponse;
@@ -13,8 +14,11 @@ import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class AuthService {
@@ -35,7 +39,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .roles(Set.of(Role.builder().role(RoleType.USER).build()))
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -52,6 +56,11 @@ public class AuthService {
                 request.getPassword()
         ));
 
+        System.out.println(authenticate.getAuthorities());
+//        System.out.println(authenticate.getPrincipal());
+        System.out.println(authenticate.getDetails());
+        System.out.println(authenticate.getCredentials());
+
         User user = userRepository.findByUsername(request.getUsername()).orElse(null);
 
         if (user != null) {
@@ -60,6 +69,13 @@ public class AuthService {
 
             var token = jwtService.generateToken(user);
             saveUserToken(user, token);
+
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    user.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
 
             return AuthResponse.builder()
                     .token(token)
